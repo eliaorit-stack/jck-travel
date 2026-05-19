@@ -239,10 +239,23 @@
     .participant-other  { background: #f1f5f9; color: #475569; }
 
     .event-note {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: #64748b;
-      margin-top: 5px;
+      margin-top: 8px;
       line-height: 1.5;
+      background: #f8fafc;
+      border-left: 3px solid #cbd5e1;
+      border-radius: 0 6px 6px 0;
+      padding: 6px 10px;
+    }
+
+    .event-note::before {
+      content: "Notes: ";
+      font-weight: 600;
+      color: #475569;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     /* flight route */
@@ -442,8 +455,8 @@
             <span class="participant-carlos">Carlos</span>
             <span class="participant-adar">Adar</span>
           </div>
-          <div class="event-location"><span class="pin">📍</span>Gran Lux Café — "There is a good one nearby the elevators, but do not remember the name"</div>
-          <div class="event-note">Unscheduled meetings to pursue: Borhanjoo · Mahiar · De Beers / Stanley Zale · Anshul Gandhi · Choron / Paul Rowaly · Tzafrir Engelheart · Sarin · Unami (awaiting update)</div>
+          <div class="event-location"><span class="pin">📍</span>Gran Lux Café</div>
+          <div class="event-note">Unscheduled meetings to pursue: Borhanjoo · Mahiar · De Beers / Stanley Zale · Anshul Gandhi · Choron / Paul Rowaly · Tzafrir Engelheart · Sarin · Unami (awaiting update) · "There is a good one nearby the elevators, but do not remember the café name"</div>
         </div>
         <div class="badge badge-meeting">📋 Meeting</div>
       </div>
@@ -668,7 +681,7 @@
           <div class="event-participants">
             <span class="participant-other">Nicolas</span>
           </div>
-          <div class="event-note">Depart at 13:30</div>
+          <div class="event-note">Depart at 13:30 to arrive on time</div>
         </div>
         <div class="badge badge-meeting">📋 Meeting</div>
       </div>
@@ -742,8 +755,8 @@
             <span class="participant-other">Hertz</span>
           </div>
           <div class="event-location"><span class="pin">📍</span>90 Matawan Road, Matawan, NJ 07747</div>
-          <div class="event-note">Note: Matawan Road (not Street) — may show as Old Bridge on Waze, same location. Contact when close.</div>
           <div class="awaiting">⏳ Awaiting update</div>
+          <div class="event-note">Matawan Road (not Street) — may show as Old Bridge on Waze, same location. Contact when close.</div>
         </div>
         <div class="badge badge-meeting">📋 Meeting</div>
       </div>
