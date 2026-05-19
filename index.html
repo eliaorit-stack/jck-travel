@@ -4,19 +4,73 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JCK 2026 Travel Schedule</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #f0f2f5;
-      color: #222;
-      padding: 24px 16px;
+    :root {
+      --bg:        #f1f4f9;
+      --card:      #ffffff;
+      --dark:      #0f172a;
+      --dark-soft: #1e293b;
+      --muted:     #94a3b8;
+      --border:    #e8edf4;
+      --blue:      #2563eb;
+      --green:     #16a34a;
+      --purple:    #7c3aed;
+      --orange:    #d97706;
+      --teal:      #0891b2;
+      --red:       #dc2626;
+      --shadow:    0 1px 3px rgba(15,23,42,.06), 0 4px 16px rgba(15,23,42,.06);
     }
 
-    h1 { text-align: center; font-size: 1.8rem; margin-bottom: 6px; color: #1a1a2e; }
-    .subtitle { text-align: center; color: #666; font-size: 0.95rem; margin-bottom: 20px; }
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      padding: 32px 16px 48px;
+      min-height: 100vh;
+    }
 
+    /* ── Header ── */
+    .page-header { text-align: center; margin-bottom: 28px; }
+
+    .page-header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .page-header .subtitle {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .trip-meta {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .trip-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      color: #64748b;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+    }
+
+    /* ── Filter bar ── */
     .filter-bar {
       display: flex;
       justify-content: center;
@@ -26,105 +80,272 @@
     }
 
     .filter-btn {
-      padding: 7px 18px;
+      padding: 8px 20px;
       border-radius: 20px;
-      border: 2px solid #d0d5e8;
+      border: 1.5px solid var(--border);
       background: #fff;
-      color: #555;
-      font-size: 0.88rem;
+      color: #64748b;
+      font-family: inherit;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.18s;
+      transition: all 0.15s;
     }
-    .filter-btn:hover { border-color: #4a6fa5; color: #4a6fa5; }
-    .filter-btn.active { background: #1a1a2e; border-color: #1a1a2e; color: #fff; }
+    .filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .filter-btn.active { background: var(--dark); border-color: var(--dark); color: #fff; }
 
-    .timeline { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+    .filter-btn[data-filter="carlos"].active { background: var(--blue);  border-color: var(--blue); }
+    .filter-btn[data-filter="meir"].active   { background: var(--green); border-color: var(--green); }
+    .filter-btn[data-filter="adar"].active   { background: var(--purple);border-color: var(--purple); }
 
-    .day-card { background: #fff; border-radius: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); overflow: hidden; }
+    /* ── Timeline ── */
+    .timeline {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* ── Day card ── */
+    .day-card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
     .day-card.all-hidden { display: none; }
 
     .day-header {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 14px; padding: 14px 20px;
-      background: #1a1a2e; color: #fff;
-      cursor: pointer; user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--dark-soft);
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
     }
-    .day-header:hover { background: #252545; }
-    .day-header-left { flex: 1; min-width: 0; }
-    .day-date { font-size: 1.1rem; font-weight: 700; }
-    .day-location { font-size: 0.85rem; color: #aab4d0; margin-top: 2px; }
+    .day-header:hover { background: #273549; }
+
+    .day-header-left { flex: 1; }
+
+    .day-date {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+
+    .day-location {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-top: 3px;
+      font-weight: 400;
+    }
+
+    .day-count {
+      font-size: 0.72rem;
+      background: rgba(255,255,255,0.12);
+      color: #cbd5e1;
+      border-radius: 10px;
+      padding: 2px 9px;
+      margin-right: 10px;
+      white-space: nowrap;
+    }
 
     .chevron {
-      flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
-      border: 2px solid rgba(255,255,255,0.3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.7rem; transition: transform 0.25s;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.65rem;
+      transition: transform 0.25s, border-color 0.15s;
+      flex-shrink: 0;
     }
-    .day-card.open .chevron { transform: rotate(180deg); }
+    .day-card.open .chevron { transform: rotate(180deg); border-color: rgba(255,255,255,0.4); }
 
+    /* ── Collapsible ── */
     .events-wrap { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
-    .day-card.open .events-wrap { max-height: 3000px; }
+    .day-card.open .events-wrap { max-height: 4000px; }
 
-    .events { display: flex; flex-direction: column; }
-
+    /* ── Event row ── */
     .event {
-      display: grid; grid-template-columns: 90px 1fr auto;
-      align-items: start; gap: 12px; padding: 14px 20px;
-      border-bottom: 1px solid #f0f0f0; transition: background 0.15s;
+      display: grid;
+      grid-template-columns: 76px 1fr auto;
+      align-items: start;
+      gap: 14px;
+      padding: 14px 20px 14px 16px;
+      border-bottom: 1px solid var(--border);
+      border-left: 3px solid transparent;
+      transition: background 0.12s;
+      position: relative;
     }
     .event:last-child { border-bottom: none; }
-    .event:hover { background: #f8f9ff; }
+    .event:hover { background: #f8fafc; }
     .event.hidden { display: none; }
 
-    .event-time { font-size: 0.95rem; font-weight: 600; color: #4a6fa5; padding-top: 2px; white-space: nowrap; }
-    .event-title { font-weight: 600; font-size: 1rem; color: #1a1a2e; margin-bottom: 4px; }
+    /* left accent by type */
+    .event[data-type="flight"]  { border-left-color: var(--teal); }
+    .event[data-type="meeting"] { border-left-color: var(--green); }
+    .event[data-type="task"]    { border-left-color: var(--orange); }
+    .event[data-type="transit"] { border-left-color: var(--purple); }
 
-    .event-participants { font-size: 0.85rem; color: #555; margin-bottom: 4px; }
+    .event-time {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--dark);
+      padding-top: 2px;
+      white-space: nowrap;
+      line-height: 1.4;
+    }
+    .event-time .time-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .event-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--dark);
+      margin-bottom: 5px;
+      line-height: 1.3;
+    }
+
+    .event-participants {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 5px;
+    }
+
     .event-participants span {
-      display: inline-block; background: #eef2ff; color: #3a4fa5;
-      border-radius: 20px; padding: 1px 10px; margin: 2px 2px 2px 0; font-size: 0.8rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 6px;
+      padding: 2px 9px;
+    }
+    .participant-carlos { background: #dbeafe; color: #1d4ed8; }
+    .participant-meir   { background: #dcfce7; color: #15803d; }
+    .participant-adar   { background: #ede9fe; color: #6d28d9; }
+    .participant-other  { background: #f1f5f9; color: #475569; }
+
+    .event-note {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 5px;
+      line-height: 1.5;
     }
 
-    .event-note { font-size: 0.82rem; color: #888; font-style: italic; margin-top: 4px; }
+    /* flight route */
+    .flight-route {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .airport {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--dark);
+      letter-spacing: 0.03em;
+    }
+    .flight-arrow {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .arrives {
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
 
+    /* location */
+    .event-location {
+      display: flex;
+      align-items: flex-start;
+      gap: 5px;
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 5px;
+      line-height: 1.5;
+    }
+    .event-location .pin { flex-shrink: 0; margin-top: 1px; }
+
+    /* badge */
     .badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 4px 12px; border-radius: 20px;
-      font-size: 0.78rem; font-weight: 600; white-space: nowrap; align-self: start;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 11px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      white-space: nowrap;
+      align-self: start;
+      letter-spacing: 0.01em;
     }
-    .badge-flight  { background: #e8f4fd; color: #1a6fa8; }
-    .badge-meeting { background: #eaf7ea; color: #2a7a2a; }
-    .badge-task    { background: #fff3e0; color: #b85c00; }
-    .badge-transit { background: #f3e8ff; color: #6a1fb5; }
+    .badge-flight  { background: #e0f2fe; color: #0369a1; }
+    .badge-meeting { background: #dcfce7; color: #166534; }
+    .badge-task    { background: #fef3c7; color: #92400e; }
+    .badge-transit { background: #ede9fe; color: #5b21b6; }
 
-    .flight-route { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: #444; margin-top: 4px; flex-wrap: wrap; }
-    .flight-route .airport { font-weight: 700; font-size: 1rem; color: #1a1a2e; }
-    .flight-route .arrow { color: #aaa; font-size: 1rem; }
-
+    /* awaiting */
     .awaiting {
-      display: inline-block; background: #fff3cd; color: #856404;
-      border-radius: 4px; padding: 1px 8px; font-size: 0.78rem; margin-top: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #fffbeb;
+      color: #b45309;
+      border: 1px solid #fde68a;
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-top: 6px;
     }
 
+    /* ── Mobile ── */
     @media (max-width: 520px) {
-      body { padding: 12px 10px; }
-      h1 { font-size: 1.35rem; }
-      .subtitle { font-size: 0.85rem; margin-bottom: 16px; }
-      .day-date { font-size: 0.95rem; }
-      .day-location { font-size: 0.78rem; }
+      body { padding: 16px 10px 40px; }
+      .page-header h1 { font-size: 1.4rem; }
+      .trip-meta { gap: 8px; }
+      .trip-meta-item { font-size: 0.78rem; padding: 4px 10px; }
       .day-header { padding: 12px 14px; }
-      .event { grid-template-columns: 64px 1fr; grid-template-rows: auto auto; padding: 12px 14px; gap: 8px; }
+      .day-date { font-size: 0.9rem; }
+      .event {
+        grid-template-columns: 60px 1fr;
+        grid-template-rows: auto auto;
+        padding: 12px 12px 12px 12px;
+        gap: 10px;
+      }
       .badge { grid-column: 2; grid-row: 2; justify-self: start; margin-top: 4px; }
-      .event-title { font-size: 0.92rem; }
-      .event-participants span { font-size: 0.75rem; padding: 1px 8px; }
+      .event-title { font-size: 0.88rem; }
     }
   </style>
 </head>
 <body>
 
-<h1>✈️ JCK 2026 Travel Schedule</h1>
-<p class="subtitle">Las Vegas &amp; New York &amp; Lisbon — May–June 2026</p>
+<div class="page-header">
+  <h1>✈️ JCK 2026 — Travel Schedule</h1>
+  <p class="subtitle">Las Vegas · New York · Lisbon &nbsp;|&nbsp; May 27 – June 6, 2026</p>
+  <div class="trip-meta">
+    <div class="trip-meta-item">📅 11 days</div>
+    <div class="trip-meta-item">👥 Carlos · Meir · Adar</div>
+    <div class="trip-meta-item">📍 LAS · EWR · JFK · LIS · TLV</div>
+  </div>
+</div>
 
 <div class="filter-bar">
   <button class="filter-btn active" data-filter="all">All</button>
@@ -135,43 +356,65 @@
 
 <div class="timeline">
 
-  <!-- 27 May -->
+  <!-- ═══ 27 May ═══ -->
   <div class="day-card">
     <div class="day-header">
       <div class="day-header-left">
         <div class="day-date">Wednesday, May 27</div>
         <div class="day-location">Departures → Las Vegas</div>
       </div>
+      <span class="day-count">3 events</span>
       <div class="chevron">▼</div>
     </div>
     <div class="events-wrap"><div class="events">
 
-      <div class="event" data-participants="adar">
+      <div class="event" data-participants="adar" data-type="flight">
         <div class="event-time">10:10</div>
         <div class="event-body">
           <div class="event-title">Flight LY 315</div>
-          <div class="event-participants"><span>Adar</span></div>
-          <div class="flight-route"><span class="airport">TLV</span><span class="arrow">→</span><span class="airport">LON</span><span style="color:#888">| Arrives 13:35</span></div>
+          <div class="event-participants">
+            <span class="participant-adar">Adar</span>
+          </div>
+          <div class="flight-route">
+            <span class="airport">TLV</span>
+            <span class="flight-arrow">→</span>
+            <span class="airport">LON</span>
+            <span class="arrives">Arrives 13:35</span>
+          </div>
         </div>
         <div class="badge badge-flight">✈ Flight</div>
       </div>
 
-      <div class="event" data-participants="adar">
+      <div class="event" data-participants="adar" data-type="flight">
         <div class="event-time">17:25</div>
         <div class="event-body">
           <div class="event-title">Flight VS 155</div>
-          <div class="event-participants"><span>Adar</span></div>
-          <div class="flight-route"><span class="airport">LON</span><span class="arrow">→</span><span class="airport">LAS</span><span style="color:#888">| Arrives 20:10</span></div>
+          <div class="event-participants">
+            <span class="participant-adar">Adar</span>
+          </div>
+          <div class="flight-route">
+            <span class="airport">LON</span>
+            <span class="flight-arrow">→</span>
+            <span class="airport">LAS</span>
+            <span class="arrives">Arrives 20:10</span>
+          </div>
         </div>
         <div class="badge badge-flight">✈ Flight</div>
       </div>
 
-      <div class="event" data-participants="carlos">
+      <div class="event" data-participants="carlos" data-type="flight">
         <div class="event-time">20:25</div>
         <div class="event-body">
           <div class="event-title">Flight TP 4319</div>
-          <div class="event-participants"><span>Carlos</span></div>
-          <div class="flight-route"><span class="airport">BOS</span><span class="arrow">→</span><span class="airport">LAS</span><span style="color:#888">| Arrives 23:52</span></div>
+          <div class="event-participants">
+            <span class="participant-carlos">Carlos</span>
+          </div>
+          <div class="flight-route">
+            <span class="airport">BOS</span>
+            <span class="flight-arrow">→</span>
+            <span class="airport">LAS</span>
+            <span class="arrives">Arrives 23:52</span>
+          </div>
         </div>
         <div class="badge badge-flight">✈ Flight</div>
       </div>
@@ -179,34 +422,45 @@
     </div></div>
   </div>
 
-  <!-- 28 May -->
+  <!-- ═══ 28 May ═══ -->
   <div class="day-card">
     <div class="day-header">
       <div class="day-header-left">
         <div class="day-date">Thursday, May 28</div>
         <div class="day-location">Las Vegas — JCK Opens</div>
       </div>
+      <span class="day-count">2 events</span>
       <div class="chevron">▼</div>
     </div>
     <div class="events-wrap"><div class="events">
 
-      <div class="event" data-participants="carlos adar">
+      <div class="event" data-participants="carlos adar" data-type="meeting">
         <div class="event-time">9:00</div>
         <div class="event-body">
-          <div class="event-title">JCK — Meetings on Site</div>
-          <div class="event-participants"><span>Carlos</span><span>Adar</span></div>
-          <div class="event-note">Meet at Gran Lux Café — "There is a good one nearby the elevators, but do not remember the name"</div>
-          <div class="event-note" style="margin-top:6px">Unscheduled meetings to pursue: Borhanjoo, Mahiar · De Beers / Stanley Zale · Anshul Gandhi · Choron / Paul Rowaly · Tzafrir Engelheart · Sarin · Waiting for Unami to update</div>
+          <div class="event-title">JCK — Meetings On Site</div>
+          <div class="event-participants">
+            <span class="participant-carlos">Carlos</span>
+            <span class="participant-adar">Adar</span>
+          </div>
+          <div class="event-location"><span class="pin">📍</span>Gran Lux Café — "There is a good one nearby the elevators, but do not remember the name"</div>
+          <div class="event-note">Unscheduled meetings to pursue: Borhanjoo · Mahiar · De Beers / Stanley Zale · Anshul Gandhi · Choron / Paul Rowaly · Tzafrir Engelheart · Sarin · Unami (awaiting update)</div>
         </div>
         <div class="badge badge-meeting">📋 Meeting</div>
       </div>
 
-      <div class="event" data-participants="meir">
+      <div class="event" data-participants="meir" data-type="flight">
         <div class="event-time">10:35</div>
         <div class="event-body">
           <div class="event-title">Flight WN 3731 — Meir Arrives</div>
-          <div class="event-participants"><span>Meir</span></div>
-          <div class="flight-route"><span class="airport">BUR</span><span class="arrow">→</span><span class="airport">LAS</span><span style="color:#888">| Arrives 11:50</span></div>
+          <div class="event-participants">
+            <span class="participant-meir">Meir</span>
+          </div>
+          <div class="flight-route">
+            <span class="airport">BUR</span>
+            <span class="flight-arrow">→</span>
+            <span class="airport">LAS</span>
+            <span class="arrives">Arrives 11:50</span>
+          </div>
         </div>
         <div class="badge badge-flight">✈ Flight</div>
       </div>
@@ -214,22 +468,26 @@
     </div></div>
   </div>
 
-  <!-- 29 May -->
+  <!-- ═══ 29 May ═══ -->
   <div class="day-card">
     <div class="day-header">
       <div class="day-header-left">
         <div class="day-date">Friday, May 29</div>
         <div class="day-location">Las Vegas — Pre-JCK Events</div>
       </div>
+      <span class="day-count">1 event</span>
       <div class="chevron">▼</div>
     </div>
     <div class="events-wrap"><div class="events">
 
-      <div class="event" data-participants="all">
+      <div class="event" data-participants="all" data-type="meeting">
         <div class="event-time">—</div>
         <div class="event-body">
           <div class="event-title">Industry Events — De Beers, WJI, WDC</div>
-          <div class="event-participants"><span>Meir</span><span>Orit</span></div>
+          <div class="event-participants">
+            <span class="participant-meir">Meir</span>
+            <span class="participant-other">Orit</span>
+          </div>
           <div class="event-note">Meir to attend WJI · WDC — Meir to contact · Check with Maria (De Beers), Iris (WJI) and Elodie (WDC) for any events</div>
         </div>
         <div class="badge badge-meeting">📋 Meeting</div>
@@ -238,34 +496,43 @@
     </div></div>
   </div>
 
-  <!-- 30 May -->
+  <!-- ═══ 30 May ═══ -->
   <div class="day-card">
     <div class="day-header">
       <div class="day-header-left">
         <div class="day-date">Saturday, May 30</div>
         <div class="day-location">Las Vegas</div>
       </div>
+      <span class="day-count">2 events</span>
       <div class="chevron">▼</div>
     </div>
     <div class="events-wrap"><div class="events">
 
-      <div class="event" data-participants="meir">
-        <div class="event-time">7:30</div>
+      <div class="event" data-participants="meir" data-type="meeting">
+        <div class="event-time">7:30
+          <span class="time-label">until 9:30</span>
+        </div>
         <div class="event-body">
           <div class="event-title">De Beers Group Breakfast</div>
-          <div class="event-participants"><span>Meir</span></div>
-          <div class="flight-route" style="margin-top:4px">📍 Marcello Ballroom, Level 4, The Venetian</div>
-          <div class="event-note">Until 9:30</div>
+          <div class="event-participants">
+            <span class="participant-meir">Meir</span>
+          </div>
+          <div class="event-location"><span class="pin">📍</span>Marcello Ballroom, Level 4, The Venetian</div>
         </div>
         <div class="badge badge-meeting">📋 Meeting</div>
       </div>
 
-      <div class="event" data-participants="carlos meir adar">
-        <div class="event-time">12:30</div>
+      <div class="event" data-participants="carlos meir adar" data-type="meeting">
+        <div class="event-time">12:30
+          <span class="time-label">until 14:00</span>
+        </div>
         <div class="event-body">
           <div class="event-title">De Beers Lunch — Paul Rowaly</div>
-          <div class="event-participants"><span>Meir</span><span>Carlos</span><span>Adar</span></div>
-          <div class="event-note">Until 14:00</div>
+          <div class="event-participants">
+            <span class="participant-carlos">Carlos</span>
+            <span class="participant-meir">Meir</span>
+            <span class="participant-adar">Adar</span>
+          </div>
         </div>
         <div class="badge badge-meeting">📋 Meeting</div>
       </div>
@@ -273,78 +540,77 @@
     </div></div>
   </div>
 
-  <!-- 31 May -->
+  <!-- ═══ 31 May ═══ -->
   <div class="day-card">
     <div class="day-header">
       <div class="day-header-left">
         <div class="day-date">Sunday, May 31</div>
         <div class="day-location">Las Vegas</div>
       </div>
+      <span class="day-count">1 event</span>
       <div class="chevron">▼</div>
     </div>
     <div class="events-wrap"><div class="events">
 
-      <div class="event" data-participants="all">
-        <div class="event-time">—</div>
-        <div class="event-body">
-          <div class="event-title">RJC — No Scheduled Events</div>
-          <div class="event-note">You can also reach out to Kinjal (RJC) for the same reason</div>
+      <div class="event" data-participants="all" data-type="meeting">
+        <div class="event-time">9:00
+          <span class="time-label">until 10:00</span>
         </div>
-        <div class="badge badge-task">⚡ Task</div>
+        <div class="event-body">
+          <div class="event-title">Breakfast — Tzafrir Engelhard &amp; Sarin</div>
+          <div class="event-participants">
+            <span class="participant-other">Sarin</span>
+            <span class="participant-other">Tzafrir Engelhard</span>
+          </div>
+          <div class="event-location"><span class="pin">📍</span>The Venetian</div>
+          <div class="awaiting">⏳ Awaiting update</div>
+        </div>
+        <div class="badge badge-meeting">📋 Meeting</div>
       </div>
 
     </div></div>
   </div>
 
-  <!-- 1 Jun -->
-  <div class="day-card">
-    <div class="day-header">
-      <div class="day-header-left">
-        <div class="day-date">Monday, June 1</div>
-        <div class="day-location">Las Vegas</div>
-      </div>
-      <div class="chevron">▼</div>
-    </div>
-    <div class="events-wrap"><div class="events">
-
-      <div class="event" data-participants="all">
-        <div class="event-time">—</div>
-        <div class="event-body">
-          <div class="event-title">Contact Pat Dambe (Gov. of Botswana)</div>
-          <div class="event-note">Rathindra will reach out to Solomon (Diamond Hub)</div>
-        </div>
-        <div class="badge badge-task">⚡ Task</div>
-      </div>
-
-    </div></div>
-  </div>
-
-  <!-- 2 Jun -->
+  <!-- ═══ 2 Jun ═══ -->
   <div class="day-card">
     <div class="day-header">
       <div class="day-header-left">
         <div class="day-date">Tuesday, June 2</div>
         <div class="day-location">Las Vegas → New York (EWR)</div>
       </div>
+      <span class="day-count">2 events</span>
       <div class="chevron">▼</div>
     </div>
     <div class="events-wrap"><div class="events">
 
-      <div class="event" data-participants="carlos meir adar">
+      <div class="event" data-participants="carlos meir adar" data-type="transit">
         <div class="event-time">8:00</div>
         <div class="event-body">
           <div class="event-title">Depart to Airport</div>
-          <div class="event-participants"><span>Carlos</span><span>Meir</span><span>Adar</span></div>
+          <div class="event-participants">
+            <span class="participant-carlos">Carlos</span>
+            <span class="participant-meir">Meir</span>
+            <span class="participant-adar">Adar</span>
+          </div>
         </div>
         <div class="badge badge-transit">🚗 Transit</div>
       </div>
 
-      <div class="event" data-participants="carlos meir adar">
+      <div class="event" data-participants="carlos meir adar" data-type="flight">
         <div class="event-time">10:30</div>
         <div class="event-body">
           <div class="event-title">Flight B6 956</div>
-          <div class="event-participants"><span>Carlos</span><span>Meir</span><span>Adar</span></div>
-          <div class="flight-route"><span class="airport">LAS</span><span class="arrow">→</span><span class="airport">EWR</span><span style="color:#888">| Arrives 18:35</span></div>
+          <div class="event-participants">
+            <span class="participant-carlos">Carlos</span>
+            <span class="participant-meir">Meir</span>
+            <span class="participant-adar">Adar</span>
+          </div>
+          <div class="flight-route">
+            <span class="airport">LAS</span>
+            <span class="flight-arrow">→</span>
+            <span class="airport">EWR</span>
+            <span class="arrives">Arrives 18:35</span>
+          </div>
         </div>
         <div class="badge badge-flight">✈ Flight</div>
       </div>
@@ -352,62 +618,87 @@
     </div></div>
   </div>
 
-  <!-- 3 Jun -->
+  <!-- ═══ 3 Jun ═══ -->
   <div class="day-card">
     <div class="day-header">
       <div class="day-header-left">
         <div class="day-date">Wednesday, June 3</div>
         <div class="day-location">New York</div>
       </div>
+      <span class="day-count">5 events</span>
       <div class="chevron">▼</div>
     </div>
     <div class="events-wrap"><div class="events">
 
-      <div class="event" data-participants="carlos meir adar">
+      <div class="event" data-participants="carlos meir adar" data-type="transit">
         <div class="event-time">9:00</div>
         <div class="event-body">
           <div class="event-title">Meet at Hotel Lobby</div>
-          <div class="event-participants"><span>Carlos</span><span>Meir</span><span>Adar</span></div>
+          <div class="event-participants">
+            <span class="participant-carlos">Carlos</span>
+            <span class="participant-meir">Meir</span>
+            <span class="participant-adar">Adar</span>
+          </div>
         </div>
         <div class="badge badge-transit">🏨 Logistics</div>
       </div>
 
-      <div class="event" data-participants="other">
-        <div class="event-time">10:00</div>
+      <div class="event" data-participants="other" data-type="meeting">
+        <div class="event-time">10:00
+          <span class="time-label">until 11:30</span>
+        </div>
         <div class="event-body">
           <div class="event-title">GKD Meeting</div>
-          <div class="event-participants"><span>AD</span><span>Moshe</span><span>Shaya Klein</span></div>
-          <div class="event-note">Until 11:30</div>
+          <div class="event-participants">
+            <span class="participant-other">AD</span>
+            <span class="participant-other">Moshe</span>
+            <span class="participant-other">Shaya Klein</span>
+          </div>
           <div class="awaiting">⏳ Awaiting update — Meir to advise</div>
         </div>
         <div class="badge badge-meeting">📋 Meeting</div>
       </div>
 
-      <div class="event" data-participants="other">
-        <div class="event-time">13:30</div>
+      <div class="event" data-participants="other" data-type="meeting">
+        <div class="event-time">14:00
+          <span class="time-label">until 15:00</span>
+        </div>
         <div class="event-body">
           <div class="event-title">Tiffany Meeting</div>
-          <div class="event-participants"><span>Nicolas</span></div>
-          <div class="event-note">Depart 13:30 | Meeting 14:00 | Until 15:00</div>
+          <div class="event-participants">
+            <span class="participant-other">Nicolas</span>
+          </div>
+          <div class="event-note">Depart at 13:30</div>
         </div>
         <div class="badge badge-meeting">📋 Meeting</div>
       </div>
 
-      <div class="event" data-participants="other">
-        <div class="event-time">After lunch</div>
+      <div class="event" data-participants="other" data-type="meeting">
+        <div class="event-time">15:30
+          <span class="time-label">until 16:30</span>
+        </div>
         <div class="event-body">
           <div class="event-title">Isaac Davidowits Meeting</div>
-          <div class="event-participants"><span>Isaac</span><span>Abraham</span><span>Boruch Davidowits</span></div>
-          <div class="event-note">Approx. 1 hour</div>
+          <div class="event-participants">
+            <span class="participant-other">Isaac</span>
+            <span class="participant-other">Abraham</span>
+            <span class="participant-other">Boruch Davidowits</span>
+          </div>
+          <div class="awaiting">⏳ Awaiting update</div>
         </div>
         <div class="badge badge-meeting">📋 Meeting</div>
       </div>
 
-      <div class="event" data-participants="other">
-        <div class="event-time">—</div>
+      <div class="event" data-participants="other" data-type="meeting">
+        <div class="event-time">17:00
+          <span class="time-label">until 18:00</span>
+        </div>
         <div class="event-body">
-          <div class="event-title">Coherent Meeting</div>
-          <div class="event-participants"><span>Chick</span></div>
+          <div class="event-title">Excellent Facets / Amadena</div>
+          <div class="event-participants">
+            <span class="participant-other">Deepak</span>
+            <span class="participant-other">Amay</span>
+          </div>
           <div class="awaiting">⏳ Awaiting update</div>
         </div>
         <div class="badge badge-meeting">📋 Meeting</div>
@@ -416,92 +707,115 @@
     </div></div>
   </div>
 
-  <!-- 4 Jun -->
+  <!-- ═══ 4 Jun ═══ -->
   <div class="day-card">
     <div class="day-header">
       <div class="day-header-left">
         <div class="day-date">Thursday, June 4</div>
         <div class="day-location">New York → Departures</div>
       </div>
+      <span class="day-count">7 events</span>
       <div class="chevron">▼</div>
     </div>
     <div class="events-wrap"><div class="events">
 
-      <div class="event" data-participants="carlos meir adar">
+      <div class="event" data-participants="carlos meir adar" data-type="transit">
         <div class="event-time">9:00</div>
         <div class="event-body">
           <div class="event-title">Meet at Hotel Lobby</div>
-          <div class="event-participants"><span>Carlos</span><span>Meir</span><span>Adar</span></div>
+          <div class="event-participants">
+            <span class="participant-carlos">Carlos</span>
+            <span class="participant-meir">Meir</span>
+            <span class="participant-adar">Adar</span>
+          </div>
         </div>
         <div class="badge badge-transit">🏨 Logistics</div>
       </div>
 
-      <div class="event" data-participants="other">
-        <div class="event-time">11:00</div>
+      <div class="event" data-participants="other" data-type="meeting">
+        <div class="event-time">11:00
+          <span class="time-label">until 12:00</span>
+        </div>
         <div class="event-body">
-          <div class="event-title">Hasenfeld Stein Meeting</div>
-          <div class="event-participants"><span>Hertz</span></div>
-          <div class="flight-route" style="margin-top:4px">📍 90 Matawan Road, Matawan, NJ 07747</div>
-          <div class="event-note">Until 12:00 · Note: It is Matawan Road not Matawan Street. On Waze may show Old Bridge — same location. Let them know when close, they'll greet outside.</div>
+          <div class="event-title">Hasenfeld Stein — Hertz</div>
+          <div class="event-participants">
+            <span class="participant-other">Hertz</span>
+          </div>
+          <div class="event-location"><span class="pin">📍</span>90 Matawan Road, Matawan, NJ 07747</div>
+          <div class="event-note">Note: Matawan Road (not Street) — may show as Old Bridge on Waze, same location. Contact when close.</div>
           <div class="awaiting">⏳ Awaiting update</div>
         </div>
         <div class="badge badge-meeting">📋 Meeting</div>
       </div>
 
-      <div class="event" data-participants="other">
-        <div class="event-time">After lunch</div>
+      <div class="event" data-participants="other" data-type="meeting">
+        <div class="event-time">13:30
+          <span class="time-label">until 14:30</span>
+        </div>
         <div class="event-body">
-          <div class="event-title">Excellent Facets / Amadena Meeting</div>
-          <div class="event-participants"><span>Deepak</span><span>Amay</span></div>
-          <div class="event-note">Approx. 1 hour</div>
+          <div class="event-title">Coherent Meeting</div>
+          <div class="event-participants">
+            <span class="participant-other">Chick</span>
+          </div>
+          <div class="awaiting">⏳ Awaiting confirmation</div>
         </div>
         <div class="badge badge-meeting">📋 Meeting</div>
       </div>
 
-      <div class="event" data-participants="meir">
+      <div class="event" data-participants="meir" data-type="transit">
         <div class="event-time">15:00</div>
         <div class="event-body">
           <div class="event-title">Depart to Airport</div>
-          <div class="event-participants"><span>Meir</span></div>
+          <div class="event-participants">
+            <span class="participant-meir">Meir</span>
+          </div>
         </div>
         <div class="badge badge-transit">🚗 Transit</div>
       </div>
 
-      <div class="event" data-participants="carlos">
+      <div class="event" data-participants="carlos" data-type="transit">
         <div class="event-time">18:30</div>
         <div class="event-body">
           <div class="event-title">Depart to Airport</div>
-          <div class="event-participants"><span>Carlos</span></div>
+          <div class="event-participants">
+            <span class="participant-carlos">Carlos</span>
+          </div>
         </div>
         <div class="badge badge-transit">🚗 Transit</div>
       </div>
 
-      <div class="event" data-participants="meir">
+      <div class="event" data-participants="meir" data-type="flight">
         <div class="event-time">18:30</div>
         <div class="event-body">
-          <div class="event-title">Flight DL 8748</div>
-          <div class="event-participants"><span>Meir</span></div>
-          <div class="flight-route"><span class="airport">JFK</span><span class="arrow">→</span><span class="airport">FRA</span><span style="color:#888">| Arrives 8:05 (+1)</span></div>
+          <div class="event-title">Flight DL 8748 → DL 8457</div>
+          <div class="event-participants">
+            <span class="participant-meir">Meir</span>
+          </div>
+          <div class="flight-route">
+            <span class="airport">JFK</span>
+            <span class="flight-arrow">→</span>
+            <span class="airport">FRA</span>
+            <span class="flight-arrow">→</span>
+            <span class="airport">TLV</span>
+            <span class="arrives">Arrives TLV 14:45 (+1)</span>
+          </div>
         </div>
         <div class="badge badge-flight">✈ Flight</div>
       </div>
 
-      <div class="event" data-participants="meir">
-        <div class="event-time">9:25 +1</div>
-        <div class="event-body">
-          <div class="event-title">Flight DL 8457</div>
-          <div class="event-participants"><span>Meir</span></div>
-          <div class="flight-route"><span class="airport">FRA</span><span class="arrow">→</span><span class="airport">TLV</span><span style="color:#888">| Arrives 14:45</span></div>
-        </div>
-        <div class="badge badge-flight">✈ Flight</div>
-      </div>
-
-      <div class="event" data-participants="carlos">
+      <div class="event" data-participants="carlos" data-type="flight">
         <div class="event-time">22:05</div>
         <div class="event-body">
           <div class="event-title">Flight TP 210</div>
-          <div class="event-participants"><span>Carlos</span></div>
-          <div class="flight-route"><span class="airport">JFK</span><span class="arrow">→</span><span class="airport">LIS</span><span style="color:#888">| Arrives 10:15 (+1)</span></div>
+          <div class="event-participants">
+            <span class="participant-carlos">Carlos</span>
+          </div>
+          <div class="flight-route">
+            <span class="airport">JFK</span>
+            <span class="flight-arrow">→</span>
+            <span class="airport">LIS</span>
+            <span class="arrives">Arrives 10:15 (+1)</span>
+          </div>
         </div>
         <div class="badge badge-flight">✈ Flight</div>
       </div>
@@ -509,42 +823,44 @@
     </div></div>
   </div>
 
-  <!-- 6 Jun -->
+  <!-- ═══ 6 Jun ═══ -->
   <div class="day-card">
     <div class="day-header">
       <div class="day-header-left">
         <div class="day-date">Saturday, June 6</div>
-        <div class="day-location">New York → Adar Returns</div>
+        <div class="day-location">New York — Adar Returns</div>
       </div>
+      <span class="day-count">3 events</span>
       <div class="chevron">▼</div>
     </div>
     <div class="events-wrap"><div class="events">
 
-      <div class="event" data-participants="adar">
+      <div class="event" data-participants="adar" data-type="transit">
         <div class="event-time">20:10</div>
         <div class="event-body">
           <div class="event-title">Depart to Airport</div>
-          <div class="event-participants"><span>Adar</span></div>
+          <div class="event-participants">
+            <span class="participant-adar">Adar</span>
+          </div>
         </div>
         <div class="badge badge-transit">🚗 Transit</div>
       </div>
 
-      <div class="event" data-participants="adar">
+      <div class="event" data-participants="adar" data-type="flight">
         <div class="event-time">23:40</div>
         <div class="event-body">
-          <div class="event-title">Flight VS 138</div>
-          <div class="event-participants"><span>Adar</span></div>
-          <div class="flight-route"><span class="airport">JFK</span><span class="arrow">→</span><span class="airport">LON</span><span style="color:#888">| Arrives 12:05 (+1)</span></div>
-        </div>
-        <div class="badge badge-flight">✈ Flight</div>
-      </div>
-
-      <div class="event" data-participants="adar">
-        <div class="event-time">15:15 +1</div>
-        <div class="event-body">
-          <div class="event-title">Flight LY 316</div>
-          <div class="event-participants"><span>Adar</span></div>
-          <div class="flight-route"><span class="airport">LON</span><span class="arrow">→</span><span class="airport">TLV</span><span style="color:#888">| Arrives 22:00</span></div>
+          <div class="event-title">Flight VS 138 → LY 316</div>
+          <div class="event-participants">
+            <span class="participant-adar">Adar</span>
+          </div>
+          <div class="flight-route">
+            <span class="airport">JFK</span>
+            <span class="flight-arrow">→</span>
+            <span class="airport">LON</span>
+            <span class="flight-arrow">→</span>
+            <span class="airport">TLV</span>
+            <span class="arrives">Arrives TLV 22:00 (+1)</span>
+          </div>
         </div>
         <div class="badge badge-flight">✈ Flight</div>
       </div>
@@ -555,12 +871,14 @@
 </div>
 
 <script>
+  // Accordion
   document.querySelectorAll('.day-header').forEach(header => {
     header.addEventListener('click', () => {
       header.closest('.day-card').classList.toggle('open');
     });
   });
 
+  // Filter
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -569,18 +887,20 @@
 
       document.querySelectorAll('.day-card').forEach(card => {
         const events = card.querySelectorAll('.event');
-        let visibleCount = 0;
+        let visible = 0;
 
         events.forEach(ev => {
-          const participants = ev.dataset.participants || '';
-          const show = filter === 'all'
-            || participants === 'all'
-            || participants.split(' ').includes(filter);
+          const p = ev.dataset.participants || '';
+          const show = filter === 'all' || p === 'all' || p.split(' ').includes(filter);
           ev.classList.toggle('hidden', !show);
-          if (show) visibleCount++;
+          if (show) visible++;
         });
 
-        if (visibleCount > 0) {
+        // update count badge
+        const countEl = card.querySelector('.day-count');
+        if (countEl) countEl.textContent = visible + (visible === 1 ? ' event' : ' events');
+
+        if (visible > 0) {
           card.classList.remove('all-hidden');
           card.classList.add('open');
         } else {
