@@ -5,69 +5,92 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JCK 2026 Travel Schedule</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #f1f4f9;
-      --card:      #ffffff;
-      --dark:      #0f172a;
-      --dark-soft: #1e293b;
-      --muted:     #94a3b8;
-      --border:    #e8edf4;
-      --blue:      #2563eb;
-      --green:     #16a34a;
-      --purple:    #7c3aed;
-      --orange:    #d97706;
-      --teal:      #0891b2;
-      --red:       #dc2626;
-      --shadow:    0 1px 3px rgba(15,23,42,.06), 0 4px 16px rgba(15,23,42,.06);
+      --card:    #ffffff;
+      --dark:    #0d1b2e;
+      --muted:   #8e9db8;
+      --border:  #e3eaf5;
+      --blue:    #2563eb;
+      --green:   #15a34a;
+      --purple:  #7c3aed;
+      --orange:  #d97706;
+      --teal:    #0891b2;
+      --shadow:  0 1px 4px rgba(13,27,46,.06), 0 6px 28px rgba(13,27,46,.08);
+      --shadow-sm: 0 1px 3px rgba(13,27,46,.05), 0 2px 8px rgba(13,27,46,.05);
     }
 
     body {
       font-family: 'Inter', 'Segoe UI', sans-serif;
-      background: var(--bg);
+      background: linear-gradient(155deg, #e8eef8 0%, #f4f7fc 55%, #edf1f9 100%);
       color: var(--dark);
-      padding: 32px 16px 48px;
+      padding: 36px 16px 60px;
       min-height: 100vh;
     }
 
-    /* ── Header ── */
-    .page-header { text-align: center; margin-bottom: 28px; }
+    /* ── Header card ── */
+    .page-header {
+      text-align: center;
+      margin: 0 auto 32px;
+      max-width: 800px;
+      background: var(--card);
+      border-radius: 22px;
+      padding: 30px 28px 26px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
 
     .page-header h1 {
-      font-size: 1.75rem;
-      font-weight: 700;
+      font-size: 1.7rem;
+      font-weight: 800;
       color: var(--dark);
-      letter-spacing: -0.02em;
-      margin-bottom: 4px;
+      letter-spacing: -0.03em;
+      margin-bottom: 5px;
     }
 
     .page-header .subtitle {
-      font-size: 0.9rem;
+      font-size: 0.87rem;
       color: var(--muted);
       font-weight: 400;
+      letter-spacing: 0.01em;
     }
 
     .trip-meta {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 8px;
       flex-wrap: wrap;
-      margin-top: 14px;
+      margin-top: 18px;
     }
 
     .trip-meta-item {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.82rem;
-      color: #64748b;
-      background: #fff;
+      gap: 5px;
+      font-size: 0.79rem;
+      color: #56677e;
+      background: #f5f8fd;
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 5px 14px;
+      font-weight: 500;
+    }
+
+    .jck-meta-badge {
+      background: linear-gradient(135deg, #162036 0%, #1e3460 100%) !important;
+      color: #c8d8f0 !important;
+      border-color: transparent !important;
+      font-weight: 600 !important;
+    }
+
+    /* ── Constell logo ── */
+    .constell-logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
     }
 
     /* ── Filter bar ── */
@@ -80,23 +103,33 @@
     }
 
     .filter-btn {
-      padding: 8px 20px;
-      border-radius: 20px;
+      padding: 9px 22px;
+      border-radius: 22px;
       border: 1.5px solid var(--border);
-      background: #fff;
-      color: #64748b;
+      background: var(--card);
+      color: #5a6a82;
       font-family: inherit;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.18s;
+      box-shadow: var(--shadow-sm);
     }
-    .filter-btn:hover { border-color: var(--blue); color: var(--blue); }
-    .filter-btn.active { background: var(--dark); border-color: var(--dark); color: #fff; }
-
-    .filter-btn[data-filter="carlos"].active { background: var(--blue);  border-color: var(--blue); }
-    .filter-btn[data-filter="meir"].active   { background: var(--green); border-color: var(--green); }
-    .filter-btn[data-filter="adar"].active   { background: var(--purple);border-color: var(--purple); }
+    .filter-btn:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(37,99,235,.14);
+    }
+    .filter-btn.active {
+      background: var(--dark);
+      border-color: var(--dark);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(13,27,46,.25);
+    }
+    .filter-btn[data-filter="carlos"].active { background: var(--blue);   border-color: var(--blue);   box-shadow: 0 4px 16px rgba(37,99,235,.32); }
+    .filter-btn[data-filter="meir"].active   { background: var(--green);  border-color: var(--green);  box-shadow: 0 4px 16px rgba(21,163,74,.32); }
+    .filter-btn[data-filter="adar"].active   { background: var(--purple); border-color: var(--purple); box-shadow: 0 4px 16px rgba(124,58,237,.32); }
 
     /* ── Timeline ── */
     .timeline {
@@ -110,11 +143,13 @@
     /* ── Day card ── */
     .day-card {
       background: var(--card);
-      border-radius: 16px;
+      border-radius: 18px;
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
       overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.2s;
     }
+    .day-card:hover { box-shadow: 0 2px 8px rgba(13,27,46,.08), 0 12px 36px rgba(13,27,46,.11); }
     .day-card.all-hidden { display: none; }
 
     .day-header {
@@ -122,235 +157,220 @@
       align-items: center;
       justify-content: space-between;
       padding: 16px 20px;
-      background: var(--dark-soft);
+      background: linear-gradient(118deg, #0e1c30 0%, #1c3050 100%);
       cursor: pointer;
       user-select: none;
-      transition: background 0.15s;
+      transition: background 0.18s;
     }
-    .day-header:hover { background: #273549; }
+    .day-header:hover { background: linear-gradient(118deg, #172538 0%, #243d65 100%); }
 
     .day-header-left { flex: 1; }
 
     .day-date {
-      font-size: 1rem;
+      font-size: 0.98rem;
       font-weight: 700;
       color: #fff;
       letter-spacing: -0.01em;
     }
 
     .day-location {
-      font-size: 0.78rem;
-      color: #94a3b8;
+      font-size: 0.75rem;
+      color: #7492b8;
       margin-top: 3px;
       font-weight: 400;
+      letter-spacing: 0.01em;
     }
 
     .day-count {
-      font-size: 0.72rem;
-      background: rgba(255,255,255,0.12);
-      color: #cbd5e1;
+      font-size: 0.7rem;
+      background: rgba(255,255,255,0.09);
+      color: #a0b8d8;
       border-radius: 10px;
-      padding: 2px 9px;
+      padding: 3px 10px;
       margin-right: 10px;
       white-space: nowrap;
+      border: 1px solid rgba(255,255,255,0.07);
     }
 
     .chevron {
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
-      border: 1.5px solid rgba(255,255,255,0.2);
+      border: 1.5px solid rgba(255,255,255,0.16);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: rgba(255,255,255,0.6);
-      font-size: 0.65rem;
-      transition: transform 0.25s, border-color 0.15s;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.6rem;
+      transition: transform 0.26s, border-color 0.18s, background 0.18s;
       flex-shrink: 0;
     }
-    .day-card.open .chevron { transform: rotate(180deg); border-color: rgba(255,255,255,0.4); }
+    .day-card.open .chevron {
+      transform: rotate(180deg);
+      border-color: rgba(255,255,255,0.32);
+      background: rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.75);
+    }
 
     /* ── Collapsible ── */
-    .events-wrap { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .events-wrap { max-height: 0; overflow: hidden; transition: max-height 0.38s ease; }
     .day-card.open .events-wrap { max-height: 4000px; }
 
     /* ── Event row ── */
     .event {
       display: grid;
-      grid-template-columns: 76px 1fr auto;
+      grid-template-columns: 78px 1fr auto;
       align-items: start;
       gap: 14px;
-      padding: 14px 20px 14px 16px;
-      border-bottom: 1px solid var(--border);
-      border-left: 3px solid transparent;
-      transition: background 0.12s;
+      padding: 15px 20px 15px 0;
+      border-bottom: 1px solid #eef2f8;
+      border-left: 4px solid transparent;
+      transition: background 0.14s;
       position: relative;
     }
     .event:last-child { border-bottom: none; }
-    .event:hover { background: #f8fafc; }
+    .event:hover { background: #f7fafd; }
     .event.hidden { display: none; }
 
-    /* left accent by type */
     .event[data-type="flight"]  { border-left-color: var(--teal); }
     .event[data-type="meeting"] { border-left-color: var(--green); }
     .event[data-type="task"]    { border-left-color: var(--orange); }
     .event[data-type="transit"] { border-left-color: var(--purple); }
 
     .event-time {
-      font-size: 0.88rem;
+      font-size: 0.87rem;
       font-weight: 700;
       color: var(--dark);
       padding-top: 2px;
       white-space: nowrap;
       line-height: 1.4;
+      padding-left: 16px;
     }
     .event-time .time-label {
       display: block;
-      font-size: 0.7rem;
+      font-size: 0.69rem;
       font-weight: 400;
       color: var(--muted);
-      margin-top: 1px;
+      margin-top: 2px;
     }
 
     .event-title {
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.93rem;
       color: var(--dark);
       margin-bottom: 5px;
-      line-height: 1.3;
+      line-height: 1.35;
     }
 
     .event-participants {
       display: flex;
       flex-wrap: wrap;
       gap: 4px;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
 
     .event-participants span {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
       border-radius: 6px;
       padding: 2px 9px;
     }
     .participant-carlos { background: #dbeafe; color: #1d4ed8; }
-    .participant-meir   { background: #dcfce7; color: #15803d; }
-    .participant-adar   { background: #ede9fe; color: #6d28d9; }
-    .participant-other  { background: #f1f5f9; color: #475569; }
+    .participant-meir   { background: #d1fae5; color: #065f46; }
+    .participant-adar   { background: #ede9fe; color: #5b21b6; }
+    .participant-other  { background: #f0f4f9; color: #475569; }
 
     .event-note {
-      font-size: 0.78rem;
-      color: #64748b;
-      margin-top: 8px;
-      line-height: 1.5;
-      background: #f8fafc;
-      border-left: 3px solid #cbd5e1;
-      border-radius: 0 6px 6px 0;
-      padding: 6px 10px;
+      font-size: 0.77rem;
+      color: #546070;
+      margin-top: 9px;
+      line-height: 1.6;
+      background: #f5f8fc;
+      border-left: 3px solid #bfcfe8;
+      border-radius: 0 8px 8px 0;
+      padding: 7px 12px;
     }
-
     .event-note::before {
       content: "Notes: ";
-      font-weight: 600;
-      color: #475569;
-      font-size: 0.75rem;
+      font-weight: 700;
+      color: #374b62;
+      font-size: 0.71rem;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.06em;
     }
 
-    /* flight route */
     .flight-route {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-top: 6px;
+      margin-top: 7px;
       flex-wrap: wrap;
     }
     .airport {
-      font-weight: 700;
+      font-weight: 800;
       font-size: 1.05rem;
       color: var(--dark);
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
     }
-    .flight-arrow {
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
+    .flight-arrow { color: var(--muted); font-size: 0.88rem; }
     .arrives {
-      font-size: 0.78rem;
-      color: var(--muted);
-      background: #f1f5f9;
-      padding: 2px 8px;
+      font-size: 0.75rem;
+      color: #56677e;
+      background: #eef2f8;
+      padding: 2px 9px;
       border-radius: 6px;
+      font-weight: 500;
     }
 
-    /* location */
     .event-location {
       display: flex;
       align-items: flex-start;
       gap: 5px;
-      font-size: 0.8rem;
-      color: #64748b;
+      font-size: 0.78rem;
+      color: #56677e;
       margin-top: 5px;
       line-height: 1.5;
     }
     .event-location .pin { flex-shrink: 0; margin-top: 1px; }
 
-    /* badge */
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 4px 11px;
-      border-radius: 8px;
-      font-size: 0.72rem;
-      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.69rem;
+      font-weight: 700;
       white-space: nowrap;
       align-self: start;
-      letter-spacing: 0.01em;
+      letter-spacing: 0.02em;
     }
-    .badge-flight  { background: #e0f2fe; color: #0369a1; }
-    .badge-meeting { background: #dcfce7; color: #166534; }
+    .badge-flight  { background: #e0f4fe; color: #0369a1; }
+    .badge-meeting { background: #d1fae5; color: #065f46; }
     .badge-task    { background: #fef3c7; color: #92400e; }
     .badge-transit { background: #ede9fe; color: #5b21b6; }
 
-    /* awaiting */
     .awaiting {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       background: #fffbeb;
-      color: #b45309;
+      color: #92400e;
       border: 1px solid #fde68a;
-      border-radius: 6px;
-      padding: 3px 10px;
-      font-size: 0.75rem;
+      border-radius: 7px;
+      padding: 4px 11px;
+      font-size: 0.73rem;
       font-weight: 500;
-      margin-top: 6px;
+      margin-top: 7px;
     }
 
-    /* ── Constell logo ── */
-    .constell-logo-wrap {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 16px;
-    }
-
-    .jck-meta-badge {
-      background: linear-gradient(135deg, #1a2a44, #2d4a7a) !important;
-      color: #e2e8f0 !important;
-      border-color: #2d4a7a !important;
-      font-weight: 700 !important;
-    }
-
-    /* ── Mobile ── */
     /* ── People to Meet card ── */
     .meet-card {
       max-width: 800px;
       margin: 0 auto;
-      background: #fffbeb;
-      border: 1.5px solid #fcd34d;
-      border-radius: 16px;
+      background: #fffef8;
+      border: 1px solid #f0d97a;
+      border-radius: 18px;
       box-shadow: var(--shadow);
       overflow: hidden;
     }
@@ -359,53 +379,54 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 20px;
-      background: #f59e0b;
+      padding: 15px 22px;
+      background: linear-gradient(118deg, #b45309 0%, #d97706 50%, #f59e0b 100%);
       gap: 12px;
     }
 
     .meet-title {
-      font-size: 1rem;
+      font-size: 0.98rem;
       font-weight: 700;
       color: #fff;
       letter-spacing: -0.01em;
     }
 
     .meet-subtitle {
-      font-size: 0.78rem;
-      color: rgba(255,255,255,0.85);
-      margin-top: 2px;
+      font-size: 0.76rem;
+      color: rgba(255,255,255,0.8);
+      margin-top: 3px;
     }
 
     .meet-progress {
-      background: rgba(255,255,255,0.25);
+      background: rgba(0,0,0,0.15);
       color: #fff;
-      font-size: 0.8rem;
+      font-size: 0.79rem;
       font-weight: 700;
       border-radius: 20px;
       padding: 4px 14px;
       white-space: nowrap;
       flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.2);
     }
 
-    .meet-body { padding: 8px 0; }
+    .meet-body { padding: 6px 0; }
 
     .meet-person {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 20px;
-      border-bottom: 1px solid #fde68a;
+      padding: 11px 22px;
+      border-bottom: 1px solid #fde9a0;
       gap: 12px;
-      transition: background 0.12s;
+      transition: background 0.14s;
     }
     .meet-person:last-child { border-bottom: none; }
-    .meet-person:hover { background: #fef3c7; }
+    .meet-person:hover { background: #fefce8; }
     .meet-person.met { background: #f0fdf4; }
-    .meet-person.met .meet-name { color: #86efac; text-decoration: line-through; }
+    .meet-person.met .meet-name { color: #6ee7b7; text-decoration: line-through; }
 
     .meet-name {
-      font-size: 0.9rem;
+      font-size: 0.89rem;
       font-weight: 500;
       color: #1c1917;
       display: flex;
@@ -415,59 +436,57 @@
     }
 
     .meet-co {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
       background: #fde68a;
-      color: #92400e;
+      color: #78350f;
       border-radius: 6px;
-      padding: 1px 7px;
+      padding: 2px 8px;
     }
 
     .meet-pending {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 500;
       background: #fee2e2;
-      color: #b91c1c;
+      color: #991b1b;
       border-radius: 6px;
-      padding: 1px 7px;
+      padding: 2px 8px;
     }
 
     .meet-btn {
       font-family: inherit;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 600;
-      padding: 5px 14px;
+      padding: 6px 16px;
       border-radius: 20px;
       border: 1.5px solid #d97706;
       background: #fff;
       color: #d97706;
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.15s;
+      transition: all 0.16s;
       flex-shrink: 0;
     }
-    .meet-btn:hover { background: #fef3c7; }
-    .meet-btn.met {
-      background: #16a34a;
-      border-color: #16a34a;
-      color: #fff;
-    }
+    .meet-btn:hover { background: #fef3c7; transform: translateY(-1px); box-shadow: 0 2px 8px rgba(217,119,6,.2); }
+    .meet-btn.met { background: #15a34a; border-color: #15a34a; color: #fff; }
 
     @media (max-width: 520px) {
-      body { padding: 16px 10px 40px; }
-      .page-header h1 { font-size: 1.4rem; }
-      .trip-meta { gap: 8px; }
-      .trip-meta-item { font-size: 0.78rem; padding: 4px 10px; }
-      .day-header { padding: 12px 14px; }
+      body { padding: 16px 10px 44px; }
+      .page-header { padding: 22px 16px 20px; border-radius: 16px; }
+      .page-header h1 { font-size: 1.35rem; }
+      .trip-meta { gap: 6px; }
+      .trip-meta-item { font-size: 0.76rem; padding: 4px 10px; }
+      .day-header { padding: 13px 14px; }
       .day-date { font-size: 0.9rem; }
       .event {
-        grid-template-columns: 60px 1fr;
+        grid-template-columns: 62px 1fr;
         grid-template-rows: auto auto;
-        padding: 12px 12px 12px 12px;
+        padding: 12px 12px 12px 0;
         gap: 10px;
       }
+      .event-time { padding-left: 12px; }
       .badge { grid-column: 2; grid-row: 2; justify-self: start; margin-top: 4px; }
-      .event-title { font-size: 0.88rem; }
+      .event-title { font-size: 0.87rem; }
     }
   </style>
 </head>
@@ -475,12 +494,28 @@
 
 <div class="page-header">
   <div class="constell-logo-wrap">
-    <svg width="152" height="42" viewBox="0 0 152 42" xmlns="http://www.w3.org/2000/svg">
-      <rect width="152" height="42" rx="6" fill="#1a2a44"/>
-      <polyline points="8,7 20,21 8,35" stroke="#e85c2c" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <polyline points="18,7 30,21 18,35" stroke="rgba(255,255,255,0.88)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <text x="40" y="17" font-family="'Arial Black',Arial,sans-serif" font-weight="800" font-size="11.5" fill="#ffffff" letter-spacing="1">CONSTELL</text>
-      <text x="40" y="32" font-family="Arial,sans-serif" font-weight="400" font-size="8.5" fill="rgba(255,255,255,0.55)" letter-spacing="2.8">GROUP</text>
+    <svg width="196" height="56" viewBox="0 0 196 56" xmlns="http://www.w3.org/2000/svg">
+      <!-- Background with subtle border -->
+      <rect width="196" height="56" rx="10" fill="#1b2c48"/>
+      <rect x="0.75" y="0.75" width="194.5" height="54.5" rx="9.5" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>
+      <!-- Left filled triangle (orange) -->
+      <path d="M14 12 L30 28 L14 44 Z" fill="#e8561e"/>
+      <!-- Right filled chevron (white) -->
+      <path d="M26 12 L42 28 L26 44 L31 44 L47 28 L31 12 Z" fill="rgba(255,255,255,0.90)"/>
+      <!-- Subtle inner glow on mark -->
+      <path d="M14 12 L30 28 L14 44 Z" fill="url(#og)" opacity="0.3"/>
+      <defs>
+        <linearGradient id="og" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#fff"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </linearGradient>
+      </defs>
+      <!-- Divider line -->
+      <line x1="58" y1="14" x2="58" y2="42" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+      <!-- CONSTELL text -->
+      <text x="68" y="25" font-family="'Arial Black','Helvetica Neue',Arial,sans-serif" font-weight="900" font-size="14.5" fill="#ffffff" letter-spacing="2">CONSTELL</text>
+      <!-- GROUP text -->
+      <text x="69" y="41" font-family="'Helvetica Neue',Arial,sans-serif" font-weight="300" font-size="10" fill="rgba(255,255,255,0.45)" letter-spacing="4.5">GROUP</text>
     </svg>
   </div>
   <h1>✈️ JCK 2026 — Travel Schedule</h1>
